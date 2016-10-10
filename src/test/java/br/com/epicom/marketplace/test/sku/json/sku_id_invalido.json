@@ -1,0 +1,42 @@
+{
+  "nome": "Kit Antena Parabólica Cromus KV17 1,70 M",
+  "nomeReduzido": null,
+  "id": -1,
+  "codigo": "1000002597",
+  "modelo": "Cromus",
+  "ean": "7898338460374",
+  "url": "http://produto.fornecedor.com.br/2597",
+  "foraDeLinha": false,
+  "preco": 0.0,
+  "precoDe": null,
+  "disponivel": false,
+  "estoque": 10,
+  "dimensoes": {
+    "altura": 150.0,
+    "largura": 50.0,
+    "comprimento": 100.0,
+    "peso": 1000
+  },
+  "imagens": [
+    {
+      "menor": "http://produto.fornecedor.com.br/2597/imagens/small.png",
+      "maior": "http://produto.fornecedor.com.br/2597/imagens/large.png",
+      "zoom": "http://produto.fornecedor.com.br/2597/imagens/zoom.png",
+      "ordem": 1
+    }
+  ],
+  "grupos": [
+    {
+      "nome": "Características",
+      "atributos": [
+        {
+          "codigoAtributoCategoria": "GENDER",
+          "nome": "Gênero",
+          "codigoValorAtributoCategoria": "M",
+          "valor": "Masculino"
+        }
+      ]
+    }
+  ],
+  "ativo": false
+}
