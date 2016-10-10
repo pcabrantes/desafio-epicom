@@ -1,6 +1,7 @@
 package br.com.epicom.marketplace.test.sku;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ import br.com.epicom.marketplace.repository.SkuRepository;
 import br.com.epicom.marketplace.service.SkuService;
 import br.com.epicom.marketplace.test.ApplicationTest;
 
-public class ListarSkuTest extends ApplicationTest {
+public class ListarSkuDisponiveisTest extends ApplicationTest {
 
 	private MockMvc mockMvc;
 
@@ -77,31 +78,17 @@ public class ListarSkuTest extends ApplicationTest {
 		List<Sku> list = mapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Sku>>(){});
 		
 		assertEquals(list.size(), 2);
+		
+		for (Sku s : list) {
+			assertEquals(s.isAtivo(), true);
+			assertEquals(s.isDisponivel(), true);
+			assertTrue(s.getPreco() >= 10L);
+			assertTrue(s.getPreco() <= 40L);
+		}
 	}
 	
 	@Test
-	public void testListarUmComSucesso() throws Exception {
-
-		Sku sku1 = mapper.readValue(obterJson("./json/sku.json"), Sku.class);
-		
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/marketplace/sku/{id}", sku1.getId());
-		
-		ResultMatcher resultMatcher = MockMvcResultMatchers.status().is(200);
-
-		Mockito.when(skuRepository.findOne(sku1.getId())).thenReturn(sku1);
-		
-		MvcResult result = mockMvc.perform(requestBuilder)
-				.andExpect(resultMatcher)
-				.andReturn();
-		
-		List<Sku> list = mapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Sku>>(){});
-		
-		assertEquals(list.size(), 1);
-		assertEquals(sku1.getId(), list.get(0).getId());
-	}
-	
-	@Test
-	public void testListarTodosBDVazio() throws Exception {
+	public void testListarSemResultado() throws Exception {
 
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/marketplace/sku/");
 		
@@ -110,18 +97,6 @@ public class ListarSkuTest extends ApplicationTest {
 		mockMvc.perform(requestBuilder)
 				.andExpect(resultMatcher)
 				.andReturn();
-	}
-	
-	@Test
-	public void testListarUmNaoEncontrado() throws Exception {
-
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/marketplace/sku/{id}", 3);
 		
-		ResultMatcher resultMatcher = MockMvcResultMatchers.status().is(404);
-		
-		mockMvc.perform(requestBuilder)
-				.andExpect(resultMatcher)
-				.andReturn();
 	}
-
 }

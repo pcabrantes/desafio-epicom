@@ -98,6 +98,16 @@ public class SkuService {
 		return lista;
 	}
 	
+	public List<Sku> listarDisponiveis() throws Exception {
+		List<Sku> lista = (List<Sku>) skuRepository.findAllDisponiveisPreco();
+		
+		if (lista == null || lista.isEmpty()) {
+			throw new RecursoNaoExistenteException();
+		}
+		
+		return lista;
+	}
+ 	
 	private void executarValidacoesCadastro(Sku sku) throws Exception {
 
 		if (skuRepository.exists(sku.getId())) {
