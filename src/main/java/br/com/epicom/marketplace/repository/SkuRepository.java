@@ -7,6 +7,6 @@ import br.com.epicom.marketplace.model.Sku;
 
 public interface SkuRepository extends CrudRepository<Sku, Long> {
 
-	@Query("select s from Sku s, Dimensoes d where s.id = d.sku.id")
-	Iterable<Sku> findAllWithRelationships();
+	@Query("select s from Sku s where s.ativo = true and s.disponivel = true and s.preco >= 10.0 and s.preco <= 40.0")
+	Iterable<Sku> findAllDisponiveisPreco();
 }

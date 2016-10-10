@@ -47,6 +47,11 @@ public class SkuRestController {
 		return skuService.listar(null);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value="/marketplace/sku/disponiveis")
+	public Object listarSKUDisponiveis() throws Exception {
+		return skuService.listarDisponiveis();
+	}
+	
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public MessageResponse handlerConstraintViolation(ConstraintViolationException ex) {
