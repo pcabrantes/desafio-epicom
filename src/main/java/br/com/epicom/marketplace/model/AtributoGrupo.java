@@ -7,11 +7,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class AtributoGrupo {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 	private String codigoAtributoCategoria;
 	private String nome;
@@ -20,6 +23,7 @@ public class AtributoGrupo {
 	
 	@ManyToOne
 	@JoinColumn(name = "idAtributo")
+	@JsonIgnore
 	private Grupo grupo;
 	
 	public Long getId() {

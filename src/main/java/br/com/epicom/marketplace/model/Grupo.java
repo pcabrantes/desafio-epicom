@@ -2,6 +2,7 @@ package br.com.epicom.marketplace.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,11 +13,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Grupo {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 	
 	@NotNull
@@ -24,9 +28,10 @@ public class Grupo {
 	
 	@ManyToOne
 	@JoinColumn(name="idGrupo")
+	@JsonIgnore
 	private Sku sku;
 	
-	@OneToMany(mappedBy="grupo", targetEntity=AtributoGrupo.class, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="grupo", targetEntity=AtributoGrupo.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<AtributoGrupo> atributos;
 	
 	public Long getId() {

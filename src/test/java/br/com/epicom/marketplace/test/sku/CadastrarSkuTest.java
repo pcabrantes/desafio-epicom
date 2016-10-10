@@ -43,7 +43,7 @@ public class CadastrarSkuTest extends ApplicationTest {
 	
 	private Validator validator;
 	
-	ObjectMapper mapper = new ObjectMapper();
+	private ObjectMapper mapper = new ObjectMapper();
 	
 	@Spy
 	private SkuService skuService; 

@@ -12,6 +12,8 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Dimensoes implements Serializable {
 
@@ -35,6 +37,7 @@ public class Dimensoes implements Serializable {
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idSku")
+	@JsonIgnore
 	private Sku sku;
 	
 	public double getAltura() {

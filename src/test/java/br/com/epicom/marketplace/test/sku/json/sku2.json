@@ -1,0 +1,48 @@
+{
+  "nome": "Kit Antena Parabólica Modelo 2",
+  "nomeReduzido": null,
+  "id": 2,
+  "codigo": "10000025971",
+  "modelo": "Cromus",
+  "ean": "7898338460374",
+  "url": "http://produto.fornecedor.com.br/2597",
+  "foraDeLinha": false,
+  "preco": 0.0,
+  "precoDe": null,
+  "disponivel": false,
+  "estoque": 10,
+  "dimensoes": {
+    "altura": 150.0,
+    "largura": 50.0,
+    "comprimento": 100.0,
+    "peso": 1000
+  },
+  "imagens": [
+    {
+      "menor": "http://produto.fornecedor.com.br/2597/imagens/small.png",
+      "maior": "http://produto.fornecedor.com.br/2597/imagens/large.png",
+      "zoom": "http://produto.fornecedor.com.br/2597/imagens/zoom.png",
+      "ordem": 1
+    },
+    {
+      "menor": "http://produto.fornecedor.com.br/2597/imagens/small.png",
+      "maior": "http://produto.fornecedor.com.br/2597/imagens/large.png",
+      "zoom": "http://produto.fornecedor.com.br/2597/imagens/zoom.png",
+      "ordem": 2
+    }
+  ],
+  "grupos": [
+    {
+      "nome": "Características",
+      "atributos": [
+        {
+          "codigoAtributoCategoria": "GENDER",
+          "nome": "Gênero",
+          "codigoValorAtributoCategoria": "M",
+          "valor": "Masculino"
+        }
+      ]
+    }
+  ],
+  "ativo": true
+}

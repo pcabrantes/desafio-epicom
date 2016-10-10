@@ -37,6 +37,16 @@ public class SkuRestController {
 		return skuService.remover(id);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value="/marketplace/sku/{id}")
+	public Object listarSKU(@PathVariable(value = "id") Long id) throws Exception {
+		return skuService.listar(id);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="/marketplace/sku/")
+	public Object listarSKU() throws Exception {
+		return skuService.listar(null);
+	}
+	
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public MessageResponse handlerConstraintViolation(ConstraintViolationException ex) {

@@ -8,11 +8,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Imagem {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 	private String menor;
 	private String maior;
@@ -23,6 +26,7 @@ public class Imagem {
 	
 	@ManyToOne
 	@JoinColumn(name="idImagem")
+	@JsonIgnore
 	private Sku sku;
 	
 	public Long getId() {
