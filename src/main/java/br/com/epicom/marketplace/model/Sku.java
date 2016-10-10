@@ -42,7 +42,7 @@ public class Sku {
 	private boolean ativo;
 	private String codigoCategoria;
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "sku")
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "sku")
 	private Dimensoes dimensoes;
 	
 	@OneToMany(mappedBy="sku", targetEntity=Imagem.class, fetch=FetchType.LAZY, cascade = CascadeType.ALL)

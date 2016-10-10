@@ -16,6 +16,7 @@ import br.com.epicom.marketplace.repository.SkuRepository;
 import br.com.epicom.marketplace.util.Mensagens;
 import br.com.epicom.marketplace.util.exception.BadRequestException;
 import br.com.epicom.marketplace.util.exception.RecursoJaExistenteException;
+import br.com.epicom.marketplace.util.exception.RecursoNaoExistenteException;
 import br.com.epicom.marketplace.util.response.MessageResponse;
 
 @Service
@@ -32,6 +33,20 @@ public class SkuService {
 		
 		sku = skuRepository.findOne(sku.getId());
 		
+		return new MessageResponse(HttpStatus.OK.value(), Mensagens.HTTP_STATUS_200);
+	}
+	
+	public MessageResponse remover(Long id) throws Exception {
+		
+		Sku sku = skuRepository.findOne(id);
+		
+		if (sku == null || !sku.isAtivo()) {
+			throw new RecursoNaoExistenteException();
+		}
+		
+		sku.setAtivo(false);
+		skuRepository.save(sku);
+ 		
 		return new MessageResponse(HttpStatus.OK.value(), Mensagens.HTTP_STATUS_200);
 	}
 	

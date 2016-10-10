@@ -8,6 +8,8 @@ public class HttpException extends Exception {
 	
 	public HttpException(String message, int status) {
 		super(message);
+		setMessage(message);
+		setStatus(status);
 	}
 
 	public String getMessage() {
