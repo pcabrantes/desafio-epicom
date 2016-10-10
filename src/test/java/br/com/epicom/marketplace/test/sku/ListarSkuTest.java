@@ -1,7 +1,5 @@
 package br.com.epicom.marketplace.test.sku;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,14 +11,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.epicom.marketplace.controller.SkuRestController;
@@ -70,13 +66,9 @@ public class ListarSkuTest extends ApplicationTest {
 		
 		Mockito.when(skuRepository.findAll()).thenReturn(lista);
 		
-		MvcResult result = mockMvc.perform(requestBuilder)
+		mockMvc.perform(requestBuilder)
 				.andExpect(resultMatcher)
 				.andReturn();
-		
-		List<Sku> list = mapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Sku>>(){});
-		
-		assertEquals(list.size(), 2);
 	}
 	
 	@Test
@@ -90,14 +82,9 @@ public class ListarSkuTest extends ApplicationTest {
 
 		Mockito.when(skuRepository.findOne(sku1.getId())).thenReturn(sku1);
 		
-		MvcResult result = mockMvc.perform(requestBuilder)
+		mockMvc.perform(requestBuilder)
 				.andExpect(resultMatcher)
 				.andReturn();
-		
-		List<Sku> list = mapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Sku>>(){});
-		
-		assertEquals(list.size(), 1);
-		assertEquals(sku1.getId(), list.get(0).getId());
 	}
 	
 	@Test

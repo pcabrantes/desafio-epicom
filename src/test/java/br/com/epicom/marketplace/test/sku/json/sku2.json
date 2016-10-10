@@ -7,9 +7,9 @@
   "ean": "7898338460374",
   "url": "http://produto.fornecedor.com.br/2597",
   "foraDeLinha": false,
-  "preco": 35.0,
+  "preco": 0.0,
   "precoDe": null,
-  "disponivel": true,
+  "disponivel": false,
   "estoque": 10,
   "dimensoes": {
     "altura": 150.0,
