@@ -1,11 +1,5 @@
 package br.com.epicom.marketplace.test.sku;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -29,7 +23,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.epicom.marketplace.controller.SkuRestController;
-import br.com.epicom.marketplace.model.Imagem;
 import br.com.epicom.marketplace.model.Sku;
 import br.com.epicom.marketplace.repository.SkuRepository;
 import br.com.epicom.marketplace.service.SkuService;

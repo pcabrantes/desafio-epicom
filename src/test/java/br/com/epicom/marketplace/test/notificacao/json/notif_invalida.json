@@ -1,0 +1,8 @@
+{
+	"tipo": "criacao_sku",
+	"dataEnvio": "NOT A DATE",
+	"parametros": {
+		"idProduto": 270229,
+		"idSku": 322358
+	}
+}
