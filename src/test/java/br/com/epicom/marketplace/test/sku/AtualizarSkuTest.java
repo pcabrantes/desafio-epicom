@@ -11,9 +11,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -35,11 +33,9 @@ import br.com.epicom.marketplace.repository.SkuRepository;
 import br.com.epicom.marketplace.service.SkuService;
 import br.com.epicom.marketplace.test.ApplicationTest;
 
+public class AtualizarSkuTest extends ApplicationTest {
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class CadastrarSkuTest extends ApplicationTest {
-
-	private MockMvc mockMvc;
+private MockMvc mockMvc;
 	
 	private Validator validator;
 	
@@ -68,11 +64,16 @@ public class CadastrarSkuTest extends ApplicationTest {
 	}
 	
 	@Test
-	public void testCadastrarComSucesso() throws Exception {
+	public void testAtualizarComSucesso() throws Exception {
 
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/marketplace/sku/cadastrar")
+		String json = obterJson("./json/sku_id_invalido.json");
+		
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/marketplace/sku/atualizar")
 				.contentType(APPLICATION_JSON_UTF8)
-				.content(obterJson("./json/sku.json"));
+				.content(json);
+		
+		Sku sku = mapper.readValue(json, Sku.class);
+		Mockito.when(skuRepository.findOne(sku.getId())).thenReturn(sku);
 		
 		ResultMatcher resultMatcher = MockMvcResultMatchers.status().is(200);
 		
@@ -82,45 +83,20 @@ public class CadastrarSkuTest extends ApplicationTest {
 	}
 	
 	@Test
-	public void testCadastrarJaExistente() throws Exception {
-
-		Mockito.when(skuRepository.exists(1L)).thenReturn(true);
+	public void testAtualizarNaoExistente() throws Exception {
+		String json = obterJson("./json/sku_id_invalido.json");
 		
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/marketplace/sku/cadastrar")
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/marketplace/sku/atualizar")
 				.contentType(APPLICATION_JSON_UTF8)
-				.content(obterJson("./json/sku.json"));
+				.content(json);
 		
-		ResultMatcher resultMatcher = MockMvcResultMatchers.status().is(409);
+		Sku sku = mapper.readValue(json, Sku.class);
+		Mockito.when(skuRepository.findOne(sku.getId())).thenReturn(null);
+		
+		ResultMatcher resultMatcher = MockMvcResultMatchers.status().is(404);
 		
 		mockMvc.perform(requestBuilder)
 				.andExpect(resultMatcher)
 				.andReturn();
 	}
-	
-	@Test
-	public void testCadastrarFormatoJsonInvalido() throws Exception {
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/marketplace/sku/cadastrar")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(obterJson("./json/sku_json_invalido.json"));
-		
-		ResultMatcher resultMatcher = MockMvcResultMatchers.status().is(400);
-		
-		mockMvc.perform(requestBuilder)
-				.andExpect(resultMatcher)
-				.andReturn();
-	}
-	
-	@Test
-	public void testImagensOrdemRepetida() throws Exception {
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/marketplace/sku/cadastrar")
-				.contentType(APPLICATION_JSON_UTF8)
-				.content(obterJson("./json/sku_ordem_imagem_repetida.json"));
-		
-		ResultMatcher resultMatcher = MockMvcResultMatchers.status().is(400);
-		
-		mockMvc.perform(requestBuilder)
-				.andExpect(resultMatcher)
-				.andReturn();
-	}
-	
 }

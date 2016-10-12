@@ -27,7 +27,7 @@ public class Grupo {
 	private String nome;
 	
 	@ManyToOne
-	@JoinColumn(name="idGrupo")
+	@JoinColumn(name="idSku")
 	@JsonIgnore
 	private Sku sku;
 	

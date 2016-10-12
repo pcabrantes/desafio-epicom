@@ -38,32 +38,26 @@ public class SkuService {
 		prepararInsersao(sku);
 		skuRepository.save(sku);
 		
+		return new MessageResponse(HttpStatus.OK.value(), Mensagens.HTTP_STATUS_200);
+	}
+	
+	@Transactional
+	public MessageResponse atualizar(@Valid Sku sku) throws Exception {
+		
+		Sku skuAnterior = skuRepository.findOne(sku.getId());
+		
+		if (skuAnterior == null) {
+			throw new RecursoNaoExistenteException();
+		}
+		
+		skuRepository.delete(skuAnterior);
+		validarImagens(sku);
+		prepararInsersao(sku);
+		skuRepository.save(sku);
 		
 		return new MessageResponse(HttpStatus.OK.value(), Mensagens.HTTP_STATUS_200);
 	}
 
-	private void prepararInsersao(Sku sku) {
-		sku.getDimensoes().setSku(sku);
-		
-		if (sku.getImagens() != null && !sku.getImagens().isEmpty()) {
-			for (Imagem img : sku.getImagens()) {
-				img.setSku(sku);
-			}
-		}
-		
-		if (sku.getGrupos() != null && !sku.getGrupos().isEmpty()) {
-			for (Grupo grp : sku.getGrupos()) {
-				grp.setSku(sku);
-				
-				if (grp.getAtributos() != null && !grp.getAtributos().isEmpty()) {
-					for (AtributoGrupo att : grp.getAtributos()) {
-						att.setGrupo(grp);
-					}
-				}
-			}
-		}
-	}
-	
 	public MessageResponse remover(Long id) throws Exception {
 		
 		Sku sku = skuRepository.findOne(id);
@@ -107,7 +101,7 @@ public class SkuService {
 		
 		return lista;
 	}
- 	
+	
 	private void executarValidacoesCadastro(Sku sku) throws Exception {
 
 		if (skuRepository.exists(sku.getId())) {
@@ -127,6 +121,28 @@ public class SkuService {
 					throw new BadRequestException();
 				}
 				ordens.add(img.getOrdem());
+			}
+		}
+	}
+	
+	private void prepararInsersao(Sku sku) {
+		sku.getDimensoes().setSku(sku);
+		
+		if (sku.getImagens() != null && !sku.getImagens().isEmpty()) {
+			for (Imagem img : sku.getImagens()) {
+				img.setSku(sku);
+			}
+		}
+		
+		if (sku.getGrupos() != null && !sku.getGrupos().isEmpty()) {
+			for (Grupo grp : sku.getGrupos()) {
+				grp.setSku(sku);
+				
+				if (grp.getAtributos() != null && !grp.getAtributos().isEmpty()) {
+					for (AtributoGrupo att : grp.getAtributos()) {
+						att.setGrupo(grp);
+					}
+				}
 			}
 		}
 	}

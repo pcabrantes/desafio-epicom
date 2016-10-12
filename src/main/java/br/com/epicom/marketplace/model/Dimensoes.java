@@ -70,4 +70,11 @@ public class Dimensoes implements Serializable {
 	public void setSku(Sku sku) {
 		this.sku = sku;
 	}
+	
+	public void clone(Dimensoes d) {
+		setAltura(d.getAltura());
+		setComprimento(d.getComprimento());
+		setLargura(d.getLargura());
+		setPeso(d.getPeso());
+	}
 }

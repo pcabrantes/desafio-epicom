@@ -25,7 +25,7 @@ public class Imagem {
 	private int ordem;
 	
 	@ManyToOne
-	@JoinColumn(name="idImagem")
+	@JoinColumn(name="idSku")
 	@JsonIgnore
 	private Sku sku;
 	

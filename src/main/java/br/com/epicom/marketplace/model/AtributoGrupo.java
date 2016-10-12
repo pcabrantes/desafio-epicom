@@ -22,7 +22,7 @@ public class AtributoGrupo {
 	private String valor;
 	
 	@ManyToOne
-	@JoinColumn(name = "idAtributo")
+	@JoinColumn(name = "idGrupo")
 	@JsonIgnore
 	private Grupo grupo;
 	
