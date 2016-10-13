@@ -7,7 +7,7 @@ import br.com.epicom.marketplace.model.Sku;
 
 public interface SkuRepository extends CrudRepository<Sku, Long> {
 
-	@Query("select s from Sku s where s.ativo = true and s.disponivel = true and s.preco >= 10.0 and s.preco <= 40.0")
+	@Query("select s from Sku s where s.ativo = true and s.disponivel = true and s.preco >= 10.0 and s.preco <= 40.0 order by s.preco asc")
 	Iterable<Sku> findAllDisponiveisPreco();
 	
 	@Query("select s from Sku s where s.ativo = true")
