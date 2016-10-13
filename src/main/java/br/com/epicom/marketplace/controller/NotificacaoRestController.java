@@ -17,6 +17,13 @@ import br.com.epicom.marketplace.util.Mensagens;
 import br.com.epicom.marketplace.util.request.NotificacaoJson;
 import br.com.epicom.marketplace.util.response.MessageResponse;
 
+/**
+ * Classe responsável por gerenciar requisições REST de notificações
+ * 
+ * 
+ * @author Paulo Cesar Abrantes
+ *
+ */
 @RestController
 public class NotificacaoRestController {
 
@@ -25,13 +32,42 @@ public class NotificacaoRestController {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	/**
+	 * Serviço utilizado para rececber uma notificação de cadastro de SKU
+	 * 
+	 * @param jsonObject no seguinte Formato:
+	 * 
+	 * {
+  	 *		"tipo": "criacao_sku",
+  	 *		"dataEnvio": "<data>",
+  	 *		"parametros": {
+     *			"idProduto": <idProduto>,
+     *			"idSku": <idSku>
+  	 *		}
+	 * }
+	 * 
+	 * @return Um json indicando que a operação foi concluída com sucesso
+	 * 
+	 * @throws Exception
+	 */
 	@RequestMapping(method = RequestMethod.POST, value="/marketplace/notificacao")
-	public MessageResponse cadastrarSKU(@RequestBody NotificacaoJson jsonObject) throws Exception {
+	public MessageResponse notificar(@RequestBody NotificacaoJson jsonObject) throws Exception {
 		logger.info("Serviço iniciado: POST /marketplace/notificacao");
 		logger.info("RequestBody: " + jsonObject);
 		return notificacaoService.receberNotificacao(jsonObject);
 	}
 	
+	
+	/**
+	 * Método utilizado para capturar uma exceção de formato inválido do json enviado para o método notificar.
+	 * 
+	 * @param ex
+	 * @return Um json no seguinte formato: 
+	 * {
+	 * 		"code" : 400
+	 * 		"message" : "Requisição inválida ou não pôde ser entregue."
+	 * } 
+	 */
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public MessageResponse handlerFormatoJsonInvalido(HttpMessageNotReadableException ex) {

@@ -9,6 +9,12 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Classe que representa os atributos de um Grupo
+ * 
+ * @author pc
+ *
+ */
 @Entity
 public class AtributoGrupo {
 

@@ -2,6 +2,12 @@ package br.com.epicom.marketplace.util.response;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Classe que representa um json de resposta a um requisição em um serviço REST
+ * 
+ * @author Paulo Cesar Abrantes
+ *
+ */
 public class MessageResponse {
 
 	private int code;

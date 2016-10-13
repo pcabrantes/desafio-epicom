@@ -10,6 +10,12 @@ import javax.validation.constraints.Min;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Classe que representa uma Imagem
+ *
+ * @author Paulo Cesar Abrantes
+ *
+ */
 @Entity
 public class Imagem {
 

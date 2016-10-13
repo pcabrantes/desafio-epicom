@@ -23,6 +23,12 @@ import br.com.epicom.marketplace.util.exception.RecursoJaExistenteException;
 import br.com.epicom.marketplace.util.exception.RecursoNaoExistenteException;
 import br.com.epicom.marketplace.util.response.MessageResponse;
 
+/**
+ * Classe responsável por gerenciar requisições REST de SKUs
+ * 
+ * @author Paulo Cesar Abrantes
+ *
+ */
 @RestController
 public class SkuRestController {
 
@@ -31,6 +37,14 @@ public class SkuRestController {
 	@Autowired
 	private SkuService skuService;
 	
+	/**
+	 * Método utilizado para cadastrar um novo SKU
+	 * 
+	 * @param sku O SKU em no formato json
+	 * @return Um json informando que a operação foi executada com sucesso
+	 * 
+	 * @throws Exception
+	 */
 	@RequestMapping(method = RequestMethod.POST, value="/marketplace/sku/cadastrar")
 	public MessageResponse cadastrarSKU(@RequestBody Sku sku) throws Exception {
 		logger.info("Serviço iniciado: POST /marketplace/sku/cadastrar");
@@ -38,6 +52,13 @@ public class SkuRestController {
 		return skuService.cadastrar(sku);
 	}
 	
+	/**
+	 * Método utilizado para remover um SKU cadastrado.
+	 * 
+	 * @param id O id do SKU
+	 * @return Um json informando que a operação foi executado com sucesso
+	 * @throws Exception
+	 */
 	@RequestMapping(method = RequestMethod.DELETE, value="/marketplace/sku/remover/{id}")
 	public MessageResponse removerSKU(@PathVariable(value = "id") Long id) throws Exception {
 		logger.info("Serviço iniciado: DELETE /marketplace/sku/remover/{id}");
@@ -45,6 +66,14 @@ public class SkuRestController {
 		return skuService.remover(id);
 	}
 	
+	
+	/**
+	 * Método utilizado para consultar um SKU
+	 *  
+	 * @param id O id do SKU
+	 * @return O SKU no formato json
+	 * @throws Exception
+	 */
 	@RequestMapping(method = RequestMethod.GET, value="/marketplace/sku/{id}")
 	public Object listarSKU(@PathVariable(value = "id") Long id) throws Exception {
 		logger.info("Serviço iniciado: GET /marketplace/sku/{id}");
@@ -52,18 +81,40 @@ public class SkuRestController {
 		return skuService.obter(id);
 	}
 	
+	
+	/**
+	 * Método utilizado para listar os SKUs ativos
+	 * 
+	 * @return Uma lista de SKU no formato json
+	 * @throws Exception
+	 */
 	@RequestMapping(method = RequestMethod.GET, value="/marketplace/sku/")
 	public Object listarSKU() throws Exception {
 		logger.info("Serviço iniciado: GET /marketplace/sku/");
 		return skuService.listar();
 	}
 	
+	
+	/**
+	 * Método utilizado para retornar todos os SKUs ativos, disponíveis e com preço entre 10.00 e 40.00
+	 * 
+	 * @return Uma lista de SKU no formato json
+	 * @throws Exception
+	 */
 	@RequestMapping(method = RequestMethod.GET, value="/marketplace/sku/disponiveis")
 	public Object listarSKUDisponiveis() throws Exception {
 		logger.info("Serviço iniciado: GET /marketplace/sku/disponiveis");
 		return skuService.listarDisponiveis();
 	}
 	
+	
+	/**
+	 * Método utilizado para atualizar um SKU
+	 * 
+	 * @param sku no formato json
+	 * @return Um json informando que a operação foi executado com sucesso
+	 * @throws Exception
+	 */
 	@RequestMapping(method = RequestMethod.PUT, value="/marketplace/sku/atualizar")
 	public Object atualizarSKU(@RequestBody Sku sku) throws Exception {
 		logger.info("Serviço iniciado: PUT /marketplace/sku/atualizar");
@@ -71,6 +122,16 @@ public class SkuRestController {
 		return skuService.atualizar(sku);
 	}
 	
+	/**
+	 * Método utilizado para tratar exceções quando a aplicação não conseguir converter o json informado em Objeto
+	 * 
+	 * @param ex
+	 * @return Um json no seguinte formato: 
+	 * {
+	 * 		"code" : 400
+	 * 		"message" : "Requisição inválida ou não pôde ser entregue."
+	 * } 
+	 */
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public MessageResponse handlerConstraintViolation(ConstraintViolationException ex) {
@@ -78,6 +139,16 @@ public class SkuRestController {
 		return new MessageResponse(HttpStatus.BAD_REQUEST.value(), Mensagens.HTTP_STATUS_400);
 	}
 	
+	/**
+	 * Método utilizado para tratar exceções quando o json informado não estiver no formato correto
+	 * 
+	 * @param ex
+	 * @return Um json no seguinte formato: 
+	 * {
+	 * 		"code" : 400
+	 * 		"message" : "Requisição inválida ou não pôde ser entregue."
+	 * } 
+	 */
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public MessageResponse handlerBadRequest(BadRequestException ex) {
@@ -85,6 +156,16 @@ public class SkuRestController {
 		return new MessageResponse(HttpStatus.BAD_REQUEST.value(), Mensagens.HTTP_STATUS_400);
 	}
 	
+	/**
+	 * Método utilizado para tratar exceções quando o json informado não estiver no formato correto
+	 * 
+	 * @param ex
+	 * @return Um json no seguinte formato: 
+	 * {
+	 * 		"code" : 400
+	 * 		"message" : "Requisição inválida ou não pôde ser entregue."
+	 * } 
+	 */
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public MessageResponse handlerFormatoJsonInvalido(HttpMessageNotReadableException ex) {
@@ -92,6 +173,16 @@ public class SkuRestController {
 		return new MessageResponse(HttpStatus.BAD_REQUEST.value(), Mensagens.HTTP_STATUS_400);
 	}
 	
+	/**
+	 * Método utilizado para tratar exceções ao tentar inserir um SKU já existente
+	 * 
+	 * @param ex
+	 * @return Um json no seguinte formato: 
+	 * {
+	 * 		"code" : 409
+	 * 		"message" : "O recurso que está sendo criado já existe."
+	 * } 
+	 */
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.CONFLICT)
 	public MessageResponse handlerRecursoJaExistente(RecursoJaExistenteException ex) {
@@ -99,6 +190,16 @@ public class SkuRestController {
 		return new MessageResponse(ex.getStatus(), ex.getMessage());
 	}
 	
+	/**
+	 * Método utilizado para tratar exceções ao solcitar ou tentar alterar um SKU não cadastrado
+	 * 
+	 * @param ex
+	 * @return Um json no seguinte formato: 
+	 * {
+	 * 		"code" : 404
+	 * 		"message" : "A URL solicitada ou o recurso não existe."
+	 * } 
+	 */
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public MessageResponse handlerRecursoJaExistente(RecursoNaoExistenteException ex) {

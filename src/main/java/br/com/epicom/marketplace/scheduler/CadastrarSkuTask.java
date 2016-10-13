@@ -23,6 +23,12 @@ import br.com.epicom.marketplace.repository.NotificacaoRepository;
 import br.com.epicom.marketplace.service.SkuService;
 import br.com.epicom.marketplace.util.exception.RecursoJaExistenteException;
 
+/**
+ * Classe utilizada para representar um agendador de tarefas
+ * 
+ * @author Paulo Cesar Abrantes
+ *
+ */
 @Component
 public class CadastrarSkuTask {
 	
@@ -41,6 +47,12 @@ public class CadastrarSkuTask {
 	@Value("${marketplace.api.token}")
 	private String token;
 	
+	/**
+	 * Metodo utilizado para verificar a cada 30 segundos se existem novas notificacoes de cadastro de SKU e, caso
+	 * existem, buscam na API marketplace e os cadastram no BD local
+	 * 
+	 * @throws Exception
+	 */
 	@Scheduled(fixedRate = 30000)
 	public void cadastrarSku() throws Exception {
 		
@@ -71,8 +83,8 @@ public class CadastrarSkuTask {
 				params.put("id", String.valueOf(notif.getIdSku()));
 				
 				try {
-					logger.info("Acessando o serviço GET /marketplace/produtos/{idProduto}/skus/{id}");
-					logger.info("Parâmetros: idProduto=" + notif.getIdProduto() + ", id=" + notif.getIdSku());
+					logger.info("Acessando o servico GET /marketplace/produtos/{idProduto}/skus/{id}");
+					logger.info("Parametros: idProduto=" + notif.getIdProduto() + ", id=" + notif.getIdSku());
 					
 			        response = restTemplate.exchange(URI, HttpMethod.GET, request, Sku.class, params);
 					sku = response.getBody();
@@ -86,7 +98,7 @@ public class CadastrarSkuTask {
 					registrosAtualizados++;
 				} catch (RecursoJaExistenteException e) {
 					logger.error(e.getMessage(), e);
-					logger.info("O recurso já existe. A notificação será excluída.");
+					logger.info("O recurso ja existe. A notificacao sera excluida.");
 					notificacaoRepository.delete(notif);
 				} catch (Exception e) {
 					logger.error(e.getMessage(), e);

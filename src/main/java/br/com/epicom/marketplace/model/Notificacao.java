@@ -9,6 +9,12 @@ import javax.persistence.Id;
 
 import br.com.epicom.marketplace.util.request.NotificacaoJson;
 
+/**
+ * Classe que representa uma notificação
+ * 
+ * @author Paulo Cesar Abrantes
+ *
+ */
 @Entity
 public class Notificacao {
 

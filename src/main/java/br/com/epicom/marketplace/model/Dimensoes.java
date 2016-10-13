@@ -14,6 +14,12 @@ import javax.validation.constraints.Min;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Classe que representa as dimensoes de um SKU
+ * 
+ * @author Paulo Cesar Abrantes
+ *
+ */
 @Entity
 public class Dimensoes implements Serializable {
 

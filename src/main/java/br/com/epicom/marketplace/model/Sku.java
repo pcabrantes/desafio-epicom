@@ -13,6 +13,12 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Classe que representa um SKU
+ * 
+ * @author Paulo Cesar Abrantes
+ *
+ */
 @Entity
 public class Sku {
 

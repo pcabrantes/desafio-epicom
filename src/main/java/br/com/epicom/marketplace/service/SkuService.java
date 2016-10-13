@@ -25,6 +25,12 @@ import br.com.epicom.marketplace.util.exception.RecursoJaExistenteException;
 import br.com.epicom.marketplace.util.exception.RecursoNaoExistenteException;
 import br.com.epicom.marketplace.util.response.MessageResponse;
 
+/**
+ * Classe responsável por realizar operações sobre SKUs
+ * 
+ * @author Paulo Cesar Abrantes
+ *
+ */
 @Service
 @Scope("singleton")
 public class SkuService {
@@ -34,6 +40,13 @@ public class SkuService {
 	@Autowired
 	private SkuRepository skuRepository;
 	
+	/**
+	 * Método utilizado par cadastrar um novo SKU
+	 * 
+	 * @param sku O SKU a ser cadastrado
+	 * @return Mensagem informando sucesso da operação
+	 * @throws Exception
+	 */
 	@Transactional
 	public MessageResponse cadastrar(@Valid Sku sku) throws Exception{
 		
@@ -48,6 +61,13 @@ public class SkuService {
 		return ret;
 	}
 	
+	/**
+	 * Método utilizado para atualzar um SKU cadastrado no BD local
+	 * 
+	 * @param sku O SKU atualizado
+	 * @return Mensagem informando sucesso da operação
+	 * @throws Exception
+	 */
 	@Transactional
 	public MessageResponse atualizar(@Valid Sku sku) throws Exception {
 		
@@ -69,6 +89,14 @@ public class SkuService {
 		return ret;
 	}
 
+	/**
+	 * Método utilizado para remover um SKU cadastrado no BD local. Nesta operação é considerada a exclusão lógica,
+	 * ou seja, o registro permanece no BD, porém é atribuido false ao campo "ativo".
+	 * 
+	 * @param id O id do SKU
+	 * @return Mensagem informando o sucesso da operação
+	 * @throws Exception
+	 */
 	public MessageResponse remover(Long id) throws Exception {
 		
 		MessageResponse ret = new MessageResponse(HttpStatus.OK.value(), Mensagens.HTTP_STATUS_200);
@@ -87,6 +115,13 @@ public class SkuService {
 		return ret;
 	}
 	
+	
+	/**
+	 * Método utilizado para retornar todos os SKUs ativos cadastrados no BD local
+	 * 
+	 * @return Uma lista de SKU
+	 * @throws Exception
+	 */
 	public List<Sku> listar() throws Exception {
 		
 		List<Sku> lista =  (List<Sku>) skuRepository.findAllAtivos();
@@ -100,6 +135,13 @@ public class SkuService {
 		return lista;
 	}
 	
+	/**
+	 * Método utilizado para consultar um SKU com base em seu id
+	 * 
+	 * @param id O id do SKU
+	 * @return
+	 * @throws RecursoNaoExistenteException
+	 */
 	public Sku obter(Long id) throws RecursoNaoExistenteException {
 		Sku sku = skuRepository.findOneAtivo(id);
 
@@ -112,6 +154,12 @@ public class SkuService {
 		return sku;
 	}
 	
+	/**
+	 * Método que retorna todos os SKUs ativos, disponóveis e com preço entre 10.00  e 40.00 em ordem ascendente pelo preço
+	 * 
+	 * @return Uma lista de SKUs
+	 * @throws Exception
+	 */
 	public List<Sku> listarDisponiveis() throws Exception {
 		List<Sku> lista = (List<Sku>) skuRepository.findAllDisponiveisPreco();
 		
@@ -124,6 +172,12 @@ public class SkuService {
 		return lista;
 	}
 	
+	/**
+	 * Executa validações sobre o SKU informado
+	 * 
+	 * @param sku
+	 * @throws Exception
+	 */
 	private void executarValidacoesCadastro(Sku sku) throws Exception {
 
 		Sku skuAnterior = skuRepository.findOne(sku.getId());
@@ -139,6 +193,12 @@ public class SkuService {
 		validarImagens(sku);
  	}
 		
+	/**
+	 * Executa validações sobre as imagens de um SKU
+	 * 
+	 * @param sku
+	 * @throws BadRequestException
+	 */
 	private void validarImagens(Sku sku) throws BadRequestException {
 		
 		if (sku.getImagens() != null && !sku.getImagens().isEmpty()) {

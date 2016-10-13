@@ -4,6 +4,12 @@ import java.util.Date;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Classe POJO que representa um json de uma notificacao
+ * 
+ * @author Paulo Cesar Abrantes
+ *
+ */
 public class NotificacaoJson {
 
 	private String tipo;

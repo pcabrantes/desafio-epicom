@@ -1,5 +1,11 @@
 package br.com.epicom.marketplace.util.exception;
 
+/**
+ * Classe que representa uma excecao lancada a partir de uma requisicao HTTP
+ * 
+ * @author Paulo Cesar Abrantes
+ *
+ */
 public class HttpException extends Exception {
 
 	private static final long serialVersionUID = -8954615299939977763L;

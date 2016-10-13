@@ -1,5 +1,11 @@
 package br.com.epicom.marketplace.util.request;
 
+/**
+ * Classe POJO que representa os parametros de uma notificacao
+ * 
+ * @author Paulo Cesar Abrantes
+ *
+ */
 public class ParametrosNotificacao {
 
 	private Long idProduto;

@@ -15,6 +15,12 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Classe que representa um Grupo
+ * 
+ * @author Paulo Cesar Abrantes
+ *
+ */
 @Entity
 public class Grupo {
 
