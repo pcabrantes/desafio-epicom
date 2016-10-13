@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -19,10 +21,12 @@ import br.com.epicom.marketplace.model.Notificacao;
 import br.com.epicom.marketplace.model.Sku;
 import br.com.epicom.marketplace.repository.NotificacaoRepository;
 import br.com.epicom.marketplace.service.SkuService;
+import br.com.epicom.marketplace.util.exception.RecursoJaExistenteException;
 
 @Component
 public class CadastrarSkuTask {
 	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private static final String URI = "https://sandboxmhubapi.epicom.com.br/v1/marketplace/produtos/{idProduto}/skus/{id}";
 
 	@Autowired
@@ -44,6 +48,11 @@ public class CadastrarSkuTask {
 		Map<String, String> params = null;
 		
 		if (listaNotif != null && !listaNotif.isEmpty()) {
+
+			logger.info(listaNotif.size() + " SKU's a cadastrar");
+			
+			int registrosAtualizados = 0;
+			
 			RestTemplate restTemplate = new RestTemplate();
 			HttpHeaders headers = new HttpHeaders();
 			
@@ -52,26 +61,39 @@ public class CadastrarSkuTask {
 			
 			headers.add("Authorization", "Basic " + base64Auth);
 			
+			HttpEntity<String> request = new HttpEntity<String>(headers);
+			ResponseEntity<Sku> response = null;
+			Sku sku = null;
+			
 			for (Notificacao notif : listaNotif) {
 				params = new HashMap<>();
 				params.put("idProduto", String.valueOf(notif.getIdProduto()));
 				params.put("id", String.valueOf(notif.getIdSku()));
 				
 				try {
+					logger.info("Acessando o serviço GET /marketplace/produtos/{idProduto}/skus/{id}");
+					logger.info("Parâmetros: idProduto=" + notif.getIdProduto() + ", id=" + notif.getIdSku());
 					
-					HttpEntity<String> request = new HttpEntity<String>(headers);
-			        ResponseEntity<Sku> response = restTemplate.exchange(URI, HttpMethod.GET, request, Sku.class, params);
-					Sku sku = response.getBody();
+			        response = restTemplate.exchange(URI, HttpMethod.GET, request, Sku.class, params);
+					sku = response.getBody();
 					
 					if (sku != null) {
 						skuService.cadastrar(sku);
 						notif.setProcessada(true);
 						notificacaoRepository.save(notif);
 					}
+					
+					registrosAtualizados++;
+				} catch (RecursoJaExistenteException e) {
+					logger.error(e.getMessage(), e);
+					logger.info("O recurso já existe. A notificação será excluída.");
+					notificacaoRepository.delete(notif);
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				}				
 			}
+			
+			logger.info(registrosAtualizados + " registros cadastrados.");
 		}
 	}
 }

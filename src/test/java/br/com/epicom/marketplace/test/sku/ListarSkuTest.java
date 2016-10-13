@@ -68,7 +68,7 @@ public class ListarSkuTest extends ApplicationTest {
 		lista.add(sku1);
 		lista.add(sku2);
 		
-		Mockito.when(skuRepository.findAll()).thenReturn(lista);
+		Mockito.when(skuRepository.findAllAtivos()).thenReturn(lista);
 		
 		MvcResult result = mockMvc.perform(requestBuilder)
 				.andExpect(resultMatcher)
@@ -88,16 +88,15 @@ public class ListarSkuTest extends ApplicationTest {
 		
 		ResultMatcher resultMatcher = MockMvcResultMatchers.status().is(200);
 
-		Mockito.when(skuRepository.findOne(sku1.getId())).thenReturn(sku1);
+		Mockito.when(skuRepository.findOneAtivo(Mockito.anyLong())).thenReturn(sku1);
 		
 		MvcResult result = mockMvc.perform(requestBuilder)
 				.andExpect(resultMatcher)
 				.andReturn();
 		
-		List<Sku> list = mapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Sku>>(){});
+		Sku sku = mapper.readValue(result.getResponse().getContentAsString(), Sku.class);
 		
-		assertEquals(list.size(), 1);
-		assertEquals(sku1.getId(), list.get(0).getId());
+		assertEquals(sku1.getId(), sku.getId());
 	}
 	
 	@Test

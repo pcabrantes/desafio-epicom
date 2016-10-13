@@ -1,5 +1,7 @@
 package br.com.epicom.marketplace.test.sku;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -77,11 +79,14 @@ public class CadastrarSkuTest extends ApplicationTest {
 	@Test
 	public void testCadastrarJaExistente() throws Exception {
 
-		Mockito.when(skuRepository.exists(1L)).thenReturn(true);
+		String json = obterJson("./json/sku.json");
+		sku = mapper.readValue(json, Sku.class);
+		
+		Mockito.when(skuRepository.findOne(Mockito.anyLong())).thenReturn(sku);
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/marketplace/sku/cadastrar")
 				.contentType(APPLICATION_JSON_UTF8)
-				.content(obterJson("./json/sku.json"));
+				.content(json);
 		
 		ResultMatcher resultMatcher = MockMvcResultMatchers.status().is(409);
 		

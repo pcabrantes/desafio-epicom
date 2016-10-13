@@ -1,15 +1,5 @@
 package br.com.epicom.marketplace.test.sku;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -27,7 +17,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.epicom.marketplace.controller.SkuRestController;
-import br.com.epicom.marketplace.model.Imagem;
 import br.com.epicom.marketplace.model.Sku;
 import br.com.epicom.marketplace.repository.SkuRepository;
 import br.com.epicom.marketplace.service.SkuService;
@@ -36,8 +25,6 @@ import br.com.epicom.marketplace.test.ApplicationTest;
 public class AtualizarSkuTest extends ApplicationTest {
 
 private MockMvc mockMvc;
-	
-	private Validator validator;
 	
 	private ObjectMapper mapper = new ObjectMapper();
 	
@@ -58,9 +45,6 @@ private MockMvc mockMvc;
 		MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         skuService.setSkuRepository(skuRepository);
-        
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
 	}
 	
 	@Test
@@ -73,7 +57,7 @@ private MockMvc mockMvc;
 				.content(json);
 		
 		Sku sku = mapper.readValue(json, Sku.class);
-		Mockito.when(skuRepository.findOne(sku.getId())).thenReturn(sku);
+		Mockito.when(skuRepository.findOneAtivo(Mockito.any())).thenReturn(sku);
 		
 		ResultMatcher resultMatcher = MockMvcResultMatchers.status().is(200);
 		

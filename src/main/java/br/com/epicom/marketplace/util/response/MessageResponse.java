@@ -1,5 +1,7 @@
 package br.com.epicom.marketplace.util.response;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class MessageResponse {
 
 	private int code;
@@ -21,5 +23,16 @@ public class MessageResponse {
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	
+	@Override
+	public String toString() {
+		String str = "";
+		
+		try {
+			str = new ObjectMapper().writeValueAsString(this);
+		} catch (Exception e) {}
+				
+		return str;
 	}
 }

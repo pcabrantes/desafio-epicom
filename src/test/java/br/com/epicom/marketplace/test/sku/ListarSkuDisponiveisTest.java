@@ -69,7 +69,7 @@ public class ListarSkuDisponiveisTest extends ApplicationTest {
 		lista.add(sku1);
 		lista.add(sku2);
 		
-		Mockito.when(skuRepository.findAll()).thenReturn(lista);
+		Mockito.when(skuRepository.findAllAtivos()).thenReturn(lista);
 		
 		MvcResult result = mockMvc.perform(requestBuilder)
 				.andExpect(resultMatcher)

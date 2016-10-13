@@ -1,12 +1,13 @@
 package br.com.epicom.marketplace.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,8 @@ import br.com.epicom.marketplace.util.response.MessageResponse;
 @Service
 @Scope("singleton")
 public class SkuService {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private SkuRepository skuRepository;
@@ -34,17 +37,23 @@ public class SkuService {
 	@Transactional
 	public MessageResponse cadastrar(@Valid Sku sku) throws Exception{
 		
+		MessageResponse ret = new MessageResponse(HttpStatus.OK.value(), Mensagens.HTTP_STATUS_200);
+		
 		executarValidacoesCadastro(sku);
 		prepararInsersao(sku);
 		skuRepository.save(sku);
 		
-		return new MessageResponse(HttpStatus.OK.value(), Mensagens.HTTP_STATUS_200);
+		logger.info("Retorno: " + ret);
+		
+		return ret;
 	}
 	
 	@Transactional
 	public MessageResponse atualizar(@Valid Sku sku) throws Exception {
 		
-		Sku skuAnterior = skuRepository.findOne(sku.getId());
+		MessageResponse ret = new MessageResponse(HttpStatus.OK.value(), Mensagens.HTTP_STATUS_200);
+		
+		Sku skuAnterior = skuRepository.findOneAtivo(sku.getId());
 		
 		if (skuAnterior == null) {
 			throw new RecursoNaoExistenteException();
@@ -55,10 +64,14 @@ public class SkuService {
 		prepararInsersao(sku);
 		skuRepository.save(sku);
 		
-		return new MessageResponse(HttpStatus.OK.value(), Mensagens.HTTP_STATUS_200);
+		logger.info("Retorno: " + ret);
+		
+		return ret;
 	}
 
 	public MessageResponse remover(Long id) throws Exception {
+		
+		MessageResponse ret = new MessageResponse(HttpStatus.OK.value(), Mensagens.HTTP_STATUS_200);
 		
 		Sku sku = skuRepository.findOne(id);
 		
@@ -69,27 +82,34 @@ public class SkuService {
 		sku.setAtivo(false);
 		skuRepository.save(sku);
  		
-		return new MessageResponse(HttpStatus.OK.value(), Mensagens.HTTP_STATUS_200);
+		logger.info("Retorno: " + ret);
+		
+		return ret;
 	}
 	
-	public List<Sku> listar(Long id) throws Exception {
-		List<Sku> lista = new ArrayList<>();
+	public List<Sku> listar() throws Exception {
 		
-		if (id == null) {
-			lista = (List<Sku>) skuRepository.findAll();
-		} else {
-			Sku sku = skuRepository.findOne(id);
+		List<Sku> lista =  (List<Sku>) skuRepository.findAllAtivos();
 			
-			if (sku != null) {
-				lista.add(sku);
-			}
-		}
-		
 		if (lista == null || lista.isEmpty()) {
 			throw new RecursoNaoExistenteException();
 		}
+
+		logger.info(lista.size() + " Registros encontrados.");
 		
 		return lista;
+	}
+	
+	public Sku obter(Long id) throws RecursoNaoExistenteException {
+		Sku sku = skuRepository.findOneAtivo(id);
+
+		if (sku == null) {
+			throw new RecursoNaoExistenteException();
+		}
+		
+		logger.info("Retorno: " + sku);
+		
+		return sku;
 	}
 	
 	public List<Sku> listarDisponiveis() throws Exception {
@@ -99,13 +119,21 @@ public class SkuService {
 			throw new RecursoNaoExistenteException();
 		}
 		
+		logger.info(lista.size() + " Registros encontrados.");
+		
 		return lista;
 	}
 	
 	private void executarValidacoesCadastro(Sku sku) throws Exception {
 
-		if (skuRepository.exists(sku.getId())) {
-			throw new RecursoJaExistenteException();
+		Sku skuAnterior = skuRepository.findOne(sku.getId());
+		
+		if (skuAnterior != null) {
+			if (skuAnterior.isAtivo()) {
+				throw new RecursoJaExistenteException();
+			} else {
+				skuRepository.delete(sku.getId());
+			}
 		}
 		
 		validarImagens(sku);

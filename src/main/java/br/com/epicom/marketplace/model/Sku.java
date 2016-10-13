@@ -11,6 +11,8 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Entity
 public class Sku {
 
@@ -152,6 +154,18 @@ public class Sku {
 	}
 	public void setGrupos(List<Grupo> grupos) {
 		this.grupos = grupos;
+	}
+	
+	@Override
+	public String toString() {
+		String str = "";
+		
+		try {
+			str = new ObjectMapper().writeValueAsString(this);
+		} catch (Exception e) {
+		}
+		
+		return str;
 	}
 	
 }
